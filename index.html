@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>WebSocket Chat</title>
+</head>
+<body>
+	<h2>WebSocket Chat</h2>
+	
+	<div id="offlineDiv">
+		<input type="text" id="usernameText" placeholder="Your Username...">
+		<button id="connectButton" onclick="initializeSocket()">Connect to Server</button>
+	</div>
+	
+	<div id="onlineDiv">
+		<input type="text" id="chatText" placeholder="Type something...">
+		<button id="chatSendButton" onclick="sendMessageBtn()">Send message</button>
+	</div>
+	<ul id="messages"></ul>
+	<script src="client/client.js"></script>
+</body>
+</html>
