@@ -96,6 +96,7 @@ server.on('connection', (client) => {
 				for (message of messageHistory) {
 					client.send(formatPacket('chat', '#9F9F9F', message));
 				}
+				client.send(formatPacket('greeting', username));
 				break;
 			}
 		}

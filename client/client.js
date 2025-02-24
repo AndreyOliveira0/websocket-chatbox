@@ -2,13 +2,14 @@
 //		chat (2 args): style, message
 //		client_setup (1 arg): username
 
-const serverHost = 'https://websocket-chatbox.fly.dev';
 /* List of Received Client Packets and arguments */
 //		chat (2 args): style, message
+//		greeting (1 arg): username
 //		user_list (X args) - each arg is a different username
 //		client_join (1 arg): username
 //		client_left (1 arg): username
 
+const serverHost = 'https://websocket-chatbox.fly.dev';
 const MESSAGE_COOLDOWN = 0.5; //in seconds
 
 socket = null;
@@ -40,6 +41,11 @@ function initializeSocket() {
 				let styles = splitData.shift();
 				let message = packetDataJoin(splitData);
 				addMessage(message, styles);
+				break;
+			}
+			case 'greeting': {
+				let username = splitData.shift();
+				addMessage(`Welcome to the chat, ${username}!`, '#009F00');
 				break;
 			}
 			case 'user_list': {
