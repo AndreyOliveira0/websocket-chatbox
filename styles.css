@@ -1,0 +1,113 @@
+* {
+	font-family: 'Calibri';
+}
+
+body {
+	margin: 25px;
+	border: 0;
+	padding: 0;
+}
+
+h2 {
+	text-align: center;
+}
+
+.connectDiv {
+	width: 320px;
+	border: 3px solid lightgray;
+	border-radius: 10px;
+	padding: 20px;
+	margin-top: 20px;
+	align-items: center;
+}
+
+.mainDiv {
+	border: 3px solid lightgray;
+	border-radius: 10px;
+	margin: 20px 0px 0px 0px;
+	width: calc(100vw - 50px);
+	height: calc(100vh - 220px);
+	box-sizing: border-box;
+	background-color: white;
+	padding: 0;
+	min-height: 170px;
+}
+.messageBox {
+	margin: 5px;
+	padding: 0;
+}
+
+.chatText {
+	width: calc(100% - 95px);
+	padding: 5px;
+}
+
+.chatSendDiv {
+	padding: 0px 5px 0px 5px;
+	align-items: center;
+	background-color: white;
+}
+
+.chatSend {
+	width: 75px;
+	height: 30px;
+	padding: 5px;
+	border-radius: 15px;
+}
+
+.messagesDiv {
+	width: calc(100vw - 270px);
+	max-width: calc(100vw - 270px);
+	height: calc(100vh - 290px);
+	overflow-x: hidden;
+	overflow-y: auto;
+	min-height: 100px;
+	display: grid;
+}
+
+.usersDiv {
+	margin-left: 10px;
+	width: 180px;
+	height: calc(100vh - 290px);
+	padding-left: 10px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	min-height: 100px;
+	display: grid;
+	border-left: 3px solid lightgray;
+}
+
+#messages {
+	padding-top: 15px;
+	list-style-type: none;
+	margin: 5px;
+	padding: 10px;
+}
+#messages li {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid lightgray;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+#messages li:first-child {
+	padding-top: 0px;
+}
+#messages li:last-child {
+	border-bottom: 0;
+	padding-bottom: 0px;
+}
+
+#users {
+	width: 100px;
+	padding-top: 15px;
+	margin: 5px;
+	padding: 10px;
+}
+#users li {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+#messausersges li:last-child {
+	padding-bottom: 0px;
+}

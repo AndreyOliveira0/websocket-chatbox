@@ -1,9 +1,7 @@
 const usernameText = document.getElementById('usernameText');
 usernameText.value = getCookie('username');
-console.log(usernameText.value);
 function saveUsername() {
 	setCookie('username', usernameText.value, 7);
-	console.log(usernameText.value);
 }
 
 function setCookie(name, value, days) {

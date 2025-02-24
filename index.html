@@ -4,21 +4,32 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>WebSocket Chatbox</title>
+	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 	<h2>WebSocket Chatbox</h2>
+	<hr>
+	<div class="bodyDiv">
+		<div style="display: block" class="connectDiv" id="connectDiv">
+			<input type="text" id="usernameText" maxlength="20" placeholder="Your username..." onkeypress="handleKeyPress(event)">
+			<button id="connectButton" onclick="initializeSocket(); saveUsername();">Connect to Server</button>
+		</div>
 	
-	<div style="display: block" id="offlineDiv">
-		<input type="text" id="usernameText" maxlength="20" placeholder="Your Username...">
-		<button id="connectButton" onclick="initializeSocket(); saveUsername();">Connect to Server</button>
-	</div>
+		<div class="mainDiv">
+			<div class="messageBox">
+				<div style="display: inline-flex">
+					<div class="messagesDiv" id="messagesDiv"><ul id="messages"></ul></div>
+					<div class="usersDiv"><ul id="users"></ul></div>
+				</div>
 	
-	<div style="display: none" id="onlineDiv">
-		<input type="text" id="chatText" maxlength="100" placeholder="Type something...">
-		<button id="chatSendButton" onclick="sendMessageBtn()">Send message</button>
-		<span style="color: red; display: none;">You're sending messages too fast!</span>
+				<div class="chatSendDiv" id="chatSendDiv">
+					<hr>
+					<input type="text" class="chatText" id="chatText" maxlength="100" placeholder="Type something..." onkeypress="handleKeyPress(event)">
+					<button class="chatSend" id="chatSendButton" onclick="sendMessageBtn()" disabled>Send</button>
+				</div>
+			</div>
+		</div>
 	</div>
-	<ul id="messages"></ul>
 	<script src="client/client.js"></script>
 	<script src="client/cookies.js"></script>
 </body>

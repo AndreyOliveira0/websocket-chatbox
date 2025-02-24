@@ -10,7 +10,7 @@ ___
 - [X] - Limit messages sent per second to prevent spam.
 - [X] - Cookies to save username since last access.
 - [ ] - Server log in a `.txt` file.
-- [ ] - Retrieves last 100 messages for the users who just joined.
-- [ ] - List with all currently connected users.
+- [X] - Retrieves last 100 messages for the users who just joined.
+- [X] - List with all currently connected users.
 - [ ] - Chatbox site CSS, including Light and Dark themes.
 - [ ] - Optional: Chat Commands (`/help`, `/username`, for example.)

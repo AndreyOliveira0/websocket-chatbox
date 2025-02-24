@@ -1,17 +1,28 @@
-/* List of Client Packets and arguments */
-//		chat (2 args): style (optional), message
+/* List of Sent Client Packets and arguments */
+//		chat (2 args): style, message
 //		client_setup (1 arg): username
 
 const serverHost = 'https://websocket-chatbox.fly.dev';
+/* List of Received Client Packets and arguments */
+//		chat (2 args): style, message
+//		user_list (X args) - each arg is a different username
+//		client_join (1 arg): username
+//		client_left (1 arg): username
+
 const MESSAGE_COOLDOWN = 0.5; //in seconds
 
 socket = null;
 const usernameInput = document.getElementById('usernameText');
 const messageInput = document.getElementById('chatText');
+const messagesDiv = document.getElementById('messagesDiv');
+const userList = document.getElementById('users');
+const chatBox = document.getElementById('messages');
 
 function initializeSocket() {
+	if(socket != null) return;
+
 	socket = new WebSocket(serverHost);
-	addMessage(`Connecting to server...`);
+	addMessage(`Connecting to server...`, '#9F9F9F');
 	setChatVisibility(true);
 
 	socket.onopen = () => {
@@ -29,6 +40,24 @@ function initializeSocket() {
 				let styles = splitData.shift();
 				let message = packetDataJoin(splitData);
 				addMessage(message, styles);
+				break;
+			}
+			case 'user_list': {
+				for (user of splitData) {
+					addUser(user);
+				}
+				break;
+			}
+			case 'client_join': {
+				let username = splitData.shift();
+				addMessage(`${username} entered the chat, welcome!`, '#009F00');
+				addUser(username);
+				break;
+			}
+			case 'client_left': {
+				let username = splitData.shift();
+				addMessage(`${username} left the chat.`, '#9F9F9F');
+				removeUser(username);
 				break;
 			}
 		}
@@ -61,11 +90,19 @@ function sendMessageBtn() {
 	socket.send(formatPacket('chat', messageInput.value));
 	lastMessageTime = currentTime;
 	messageInput.value = '';
+	messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-const chatBox = document.getElementById('messages');
-function addMessage(message, styles = null)
-{
+function handleKeyPress(event) {
+	if (event.key === "Enter") {
+		if(socket != null)
+			sendMessageBtn();
+		else
+			initializeSocket();
+	}
+}
+
+function addMessage(message, styles = null) {
 	let newMessage = document.createElement('li');
 	newMessage.textContent = message;
 	if(styles != null && styles.trim().length > 0) {
@@ -88,16 +125,29 @@ function addMessage(message, styles = null)
 	}
 	chatBox.appendChild(newMessage);
 	//console.log(message);
+
+	let distanceToBottom = messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight;
+	if(distanceToBottom <= 50) messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function addUser(username) {
+	let userItem = document.createElement('li');
+	userItem.textContent = username;
+	userList.appendChild(userItem);
+}
+
+function removeUser(username) {
+	for (user of userList.children) {
+		if(username === user.textContent) {
+			userList.removeChild(user);
+			return;
+		}
+	}
 }
 
 function setChatVisibility(toggle) {
-	if(toggle) {
-		document.getElementById('onlineDiv').style.display = 'block';
-		document.getElementById('offlineDiv').style.display = 'none';
-	} else {
-		document.getElementById('onlineDiv').style.display = 'none';
-		document.getElementById('offlineDiv').style.display = 'block';
-	}
+	document.getElementById('chatSendButton').disabled = !toggle;
+	document.getElementById('connectDiv').style.display = toggle ? 'none' : 'block';
 }
 setChatVisibility(false);
 
