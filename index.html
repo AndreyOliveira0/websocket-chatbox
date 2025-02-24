@@ -3,21 +3,23 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>WebSocket Chat</title>
+	<title>WebSocket Chatbox</title>
 </head>
 <body>
-	<h2>WebSocket Chat</h2>
+	<h2>WebSocket Chatbox</h2>
 	
-	<div id="offlineDiv">
-		<input type="text" id="usernameText" placeholder="Your Username...">
-		<button id="connectButton" onclick="initializeSocket()">Connect to Server</button>
+	<div style="display: block" id="offlineDiv">
+		<input type="text" id="usernameText" maxlength="20" placeholder="Your Username...">
+		<button id="connectButton" onclick="initializeSocket(); saveUsername();">Connect to Server</button>
 	</div>
 	
-	<div id="onlineDiv">
-		<input type="text" id="chatText" placeholder="Type something...">
+	<div style="display: none" id="onlineDiv">
+		<input type="text" id="chatText" maxlength="100" placeholder="Type something...">
 		<button id="chatSendButton" onclick="sendMessageBtn()">Send message</button>
+		<span style="color: red; display: none;">You're sending messages too fast!</span>
 	</div>
 	<ul id="messages"></ul>
 	<script src="client/client.js"></script>
+	<script src="client/cookies.js"></script>
 </body>
 </html>

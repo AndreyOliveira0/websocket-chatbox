@@ -3,10 +3,12 @@
 //		client_setup (1 arg): username
 
 const serverHost = 'https://websocket-chatbox.fly.dev';
+const MESSAGE_COOLDOWN = 0.5; //in seconds
 
 socket = null;
 const usernameInput = document.getElementById('usernameText');
 const messageInput = document.getElementById('chatText');
+
 function initializeSocket() {
 	socket = new WebSocket(serverHost);
 	addMessage(`Connecting to server...`);
@@ -14,7 +16,7 @@ function initializeSocket() {
 
 	socket.onopen = () => {
 		addMessage('Connection established!', '#009F00');
-		socket.send(formatPacket('client_setup', usernameText.value));
+		socket.send(formatPacket('client_setup', usernameInput.value));
 	};
 
 	socket.onmessage = (event) => {
@@ -45,8 +47,20 @@ function initializeSocket() {
 	};
 }
 
+lastMessageTime = Date.now();
 function sendMessageBtn() {
+	if(messageInput.value.trim() == '') return;
+
+	let currentTime = Date.now();
+	let timeLeft = MESSAGE_COOLDOWN - (currentTime - lastMessageTime) / 1000.0;
+	if(timeLeft > 0) {
+		addMessage(`You must wait more ${Math.ceil(timeLeft * 10) / 10} seconds before sending another message!`, '#FF0000');
+		return;
+	}
+
 	socket.send(formatPacket('chat', messageInput.value));
+	lastMessageTime = currentTime;
+	messageInput.value = '';
 }
 
 const chatBox = document.getElementById('messages');
