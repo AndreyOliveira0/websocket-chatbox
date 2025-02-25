@@ -152,6 +152,10 @@ body {
 	padding-bottom: 0px;
 }
 
+#messages a {
+	color: dodgerblue;
+}
+
 #users {
 	width: 100px;
 	padding-top: 15px;

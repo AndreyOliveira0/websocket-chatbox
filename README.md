@@ -12,6 +12,6 @@ ___
 - [ ] - Server log in a `.txt` file.
 - [X] - Retrieves last 100 messages for the users who just joined.
 - [X] - List with all currently connected users.
-- [ ] - Send hyperlinks through messages.
+- [X] - Send hyperlinks through messages.
 - [X] - Chatbox site CSS, including Light and Dark themes.
 - [ ] - Optional: Chat Commands (`/help`, `/username`, for example.)

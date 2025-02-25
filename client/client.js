@@ -105,6 +105,7 @@ function addMessage(message, styles = null) {
 			}
 		}
 	}
+	newMessage.innerHTML = hyperlinkCheck(newMessage.innerHTML);
 	chatBox.appendChild(newMessage);
 	//console.log(message);
 
@@ -125,6 +126,13 @@ function removeUser(username) {
 			return;
 		}
 	}
+}
+
+function hyperlinkCheck(text) {
+	return text.replace(/(https?:\/\/[^\s]+|www\.[^\s]+)/gi, function(match) {
+		let url = match.startsWith("www.") ? "https://" + match : match; // Add "https://" if missing
+		return `<a href="${url}" target="_blank">${match}</a>`;
+	});
 }
 
 lastMessageTime = Date.now();
