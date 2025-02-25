@@ -7,24 +7,97 @@
 	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-	<h2>WebSocket Chatbox</h2>
-	<hr>
-	<div class="bodyDiv">
-		<div style="display: block" class="connectDiv" id="connectDiv">
-			<input type="text" id="usernameText" maxlength="20" placeholder="Your username..." onkeypress="handleKeyPress(event)">
+	<div class="titleDiv">
+		<h2>WebSocket Chatbox</h2>
+	</div>
+
+	<div>
+		<div class="connectDiv" id="connectDiv">
+			<input type="text" id="usernameText" maxlength="20" placeholder="Your username..." onkeypress="handleKeyPressConnect(event)">
 			<button id="connectButton" onclick="initializeSocket(); saveUsername();">Connect to Server</button>
 		</div>
 	
-		<div class="mainDiv">
+		<div class="mainDiv" id="mainDiv">
 			<div class="messageBox">
 				<div style="display: inline-flex">
-					<div class="messagesDiv" id="messagesDiv"><ul id="messages"></ul></div>
-					<div class="usersDiv"><ul id="users"></ul></div>
+					<div class="messagesDiv" id="messagesDiv"><ul id="messages">
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+						<li>AAA</li>
+					</ul></div>
+					<div class="usersDiv" id="usersDiv">
+						<div class="usersSubDiv">
+							<ul id="users">
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+								<li>AAA</li>
+							</ul>
+						</div>
+					</div>
 				</div>
 	
 				<div class="chatSendDiv" id="chatSendDiv">
-					<hr>
-					<input type="text" class="chatText" id="chatText" maxlength="100" placeholder="Type something..." onkeypress="handleKeyPress(event)">
+					<input type="text" class="chatText" id="chatText" maxlength="100" placeholder="Type something..." onkeypress="handleKeyPressMsg(event)">
 					<button class="chatSend" id="chatSendButton" onclick="sendMessageBtn()" disabled>Send</button>
 				</div>
 			</div>

@@ -6,59 +6,103 @@ body {
 	margin: 25px;
 	border: 0;
 	padding: 0;
+	margin: 0;
+	scrollbar-color: gray transparent;
 }
 
-h2 {
-	text-align: center;
+/* LIGHT AND DARK THEME */
+:root {
+	--bg-color: white;
+	--tab-color: #F3F3F3;
+	--border-color: lightgray;
+	--text-color: black;
+	--disabled-button-color: lightgray;
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg-color: #404040;
+		--tab-color: #4C4C4C;
+		--border-color: #5F5F5F;
+		--text-color: white;
+		--disabled-button-color: gray;
+	}
+	body {
+		color: var(--text-color);
+		background-color: #303030;
+		scrollbar-color: lightgray transparent;
+	}
+}
+/************************/
+
+.titleDiv {
+	height: 70px;
+	background-color: dodgerblue;
+	margin: 0;
+	padding: 5px;
+	position: sticky;
+	color: white;
 }
 
 .connectDiv {
+	margin: 25px;
 	width: 320px;
-	border: 3px solid lightgray;
-	border-radius: 10px;
+	border: 3px solid var(--border-color);
+	border-radius: 15px;
 	padding: 20px;
 	margin-top: 20px;
-	align-items: center;
+	background-color: var(--bg-color);
+}
+
+.connectDiv input {
+	background-color: var(--tab-color);
+	border-radius: 10px;
+	width: 160px;
+	margin-right: 10px;
+}
+
+.connectDiv button {
+	width: 125px;
+	height: 30px;
+	border-radius: 5px;
 }
 
 .mainDiv {
-	border: 3px solid lightgray;
-	border-radius: 10px;
-	margin: 20px 0px 0px 0px;
+	border: 3px solid var(--border-color);
+	border-radius: 15px;
+	margin: 25px 20px 0px 25px;
 	width: calc(100vw - 50px);
-	height: calc(100vh - 220px);
+	height: calc(100vh - 240px);
 	box-sizing: border-box;
-	background-color: white;
 	padding: 0;
 	min-height: 170px;
 }
+
 .messageBox {
-	margin: 5px;
+	margin: 0;
 	padding: 0;
 }
 
 .chatText {
 	width: calc(100% - 95px);
-	padding: 5px;
 }
 
 .chatSendDiv {
-	padding: 0px 5px 0px 5px;
+	border-top: 2px solid var(--border-color);
+	padding: 6px 15px 0px 15px;
 	align-items: center;
-	background-color: white;
 }
 
 .chatSend {
 	width: 75px;
 	height: 30px;
-	padding: 5px;
 	border-radius: 15px;
 }
 
 .messagesDiv {
-	width: calc(100vw - 270px);
-	max-width: calc(100vw - 270px);
-	height: calc(100vh - 290px);
+	margin: 5px 0px 5px 0px;
+	padding: 0px 5px 0px 5px;
+	width: calc(100vw - 252px);
+	height: calc(100vh - 300px);
 	overflow-x: hidden;
 	overflow-y: auto;
 	min-height: 100px;
@@ -66,15 +110,25 @@ h2 {
 }
 
 .usersDiv {
-	margin-left: 10px;
-	width: 180px;
-	height: calc(100vh - 290px);
-	padding-left: 10px;
+	background-color: var(--tab-color);
+	margin-left: 5px;
+	width: 171px;
+	height: calc(100vh - 300px);
+	padding: 5px 5px 5px 5px;
+	margin-right: 15px;
 	overflow-x: hidden;
-	overflow-y: auto;
+	overflow-y: hidden;
 	min-height: 100px;
 	display: grid;
-	border-left: 3px solid lightgray;
+	border-top-right-radius: 12px;
+	scroll-padding: 0;
+}
+
+.usersSubDiv {
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding-left: 18px;
+	font-size: 14px;
 }
 
 #messages {
@@ -86,7 +140,7 @@ h2 {
 #messages li {
 	padding-top: 5px;
 	padding-bottom: 5px;
-	border-bottom: 1px solid lightgray;
+	border-bottom: 1px solid var(--border-color);
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 }
@@ -108,6 +162,46 @@ h2 {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-#messausersges li:last-child {
+#users li:last-child {
 	padding-bottom: 0px;
+}
+
+h2 {
+	text-align: center;
+}
+
+/* BUTTON STYLING */
+button {
+	border: 0;
+	background-color: dodgerblue;
+	color: white;
+	font-weight: bold;
+	transition: 0.2s background-color;
+}
+
+button:hover {
+	background-color: royalblue;
+}
+
+button:active {
+	background-color: midnightblue;
+}
+
+button:disabled {
+	border: 0;
+	background-color: var(--disabled-button-color);
+	color: var(--text-color);
+}
+
+/* INPUT STYLING */
+input {
+	padding: 5px;
+	border: 0;
+	outline: none;
+	background-color: transparent;
+	color: var(--text-color);
+}
+input:focus {
+	border: 0;
+	outline: none;
 }

@@ -14,8 +14,10 @@ const MESSAGE_COOLDOWN = 0.5; //in seconds
 
 socket = null;
 const usernameInput = document.getElementById('usernameText');
-const messageInput = document.getElementById('chatText');
 const messagesDiv = document.getElementById('messagesDiv');
+const usersDiv = document.getElementById('usersDiv');
+const messageInput = document.getElementById('chatText');
+const sendButton = document.getElementById('chatSendButton');
 const userList = document.getElementById('users');
 const chatBox = document.getElementById('messages');
 
@@ -82,32 +84,6 @@ function initializeSocket() {
 	};
 }
 
-lastMessageTime = Date.now();
-function sendMessageBtn() {
-	if(messageInput.value.trim() == '') return;
-
-	let currentTime = Date.now();
-	let timeLeft = MESSAGE_COOLDOWN - (currentTime - lastMessageTime) / 1000.0;
-	if(timeLeft > 0) {
-		addMessage(`You must wait more ${Math.ceil(timeLeft * 10) / 10} seconds before sending another message!`, '#FF0000');
-		return;
-	}
-
-	socket.send(formatPacket('chat', messageInput.value));
-	lastMessageTime = currentTime;
-	messageInput.value = '';
-	messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
-
-function handleKeyPress(event) {
-	if (event.key === "Enter") {
-		if(socket != null)
-			sendMessageBtn();
-		else
-			initializeSocket();
-	}
-}
-
 function addMessage(message, styles = null) {
 	let newMessage = document.createElement('li');
 	newMessage.textContent = message;
@@ -151,9 +127,53 @@ function removeUser(username) {
 	}
 }
 
+lastMessageTime = Date.now();
+function sendMessageBtn() {
+	if(messageInput.value.trim() == '') return;
+
+	let currentTime = Date.now();
+	let timeLeft = MESSAGE_COOLDOWN - (currentTime - lastMessageTime) / 1000.0;
+	if(timeLeft > 0) {
+		addMessage(`You must wait more ${Math.ceil(timeLeft * 10) / 10} seconds before sending another message!`, '#FF0000');
+		return;
+	}
+
+	socket.send(formatPacket('chat', messageInput.value));
+	lastMessageTime = currentTime;
+	messageInput.value = '';
+	messagesDiv.scrollTop = messagesDiv.scrollHeight;
+	updateSendButton();
+}
+
+messageInput.addEventListener('input', updateSendButton);
+function updateSendButton() {
+	if(socket == null) {
+		sendButton.disabled = true;
+		return;
+	}
+	sendButton.disabled = messageInput.value.trim().length < 1;
+}
+
+function handleKeyPressMsg(event) {
+	if (event.key === 'Enter' && socket != null) {
+		sendMessageBtn();
+	}
+}
+
+function handleKeyPressConnect(event) {
+	if (event.key === 'Enter' && socket == null) {
+		initializeSocket();
+	}
+}
+
+const mainDiv = document.getElementById('mainDiv');
+const connectDiv = document.getElementById('connectDiv');
 function setChatVisibility(toggle) {
-	document.getElementById('chatSendButton').disabled = !toggle;
-	document.getElementById('connectDiv').style.display = toggle ? 'none' : 'block';
+	updateSendButton();
+	connectDiv.style.display = toggle ? 'none' : 'block';
+	mainDiv.style.height = toggle ? 'calc(100vh - 170px)' : 'calc(100vh - 240px)';
+	usersDiv.style.height = messagesDiv.style.height = toggle ? 'calc(100vh - 230px)' : 'calc(100vh - 300px)';
+	mainDiv.style.marginTop = toggle ? '51px' : '25px';
 }
 setChatVisibility(false);
 
