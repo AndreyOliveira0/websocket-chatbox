@@ -5,6 +5,7 @@ This project was made with the intent of learning more about WebSocket and serve
 
 [Click here to access the sample page.](https://andreyoliveira0.github.io/websocket-chatbox/)
 
+![image](https://github.com/user-attachments/assets/0feab532-067c-43e5-8705-3bb26a02c9f1)
 ___
 ## Features
 - Server:
