@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const WebSocket = require('ws');
 const serverHost = '0.0.0.0';
 const serverPort = 3000;
@@ -7,6 +9,7 @@ console.log(`Server initialized on ws://${serverHost}:${serverPort}`);
 
 const usernames = new Map();
 
+const ENABLE_SERVER_LOG = true;
 const MAX_MESSAGE_HISTORY = 100; //Max of last 100 messages history to send to users who just joined
 messageHistory = [];
 
@@ -23,18 +26,12 @@ server.on('connection', (client) => {
 				let username = usernames.get(client);
 				chatMessage = `${username}: ${chatMessage}`;
 				
-				const date = new Date(Date.now());
-				const hours = date.getHours().toString().padStart(2, '0');
-				const minutes = date.getMinutes().toString().padStart(2, '0');
-				const seconds = date.getSeconds().toString().padStart(2, '0');
-				
-				const formattedTime = `${hours}:${minutes}:${seconds}`;
-
+				const formattedTime = getTimeString();
 				let messageToSend = `${formattedTime} - ${chatMessage}`;
 				messageHistory.push(messageToSend);
 				if(messageHistory.length > MAX_MESSAGE_HISTORY) messageHistory.shift();
 
-				console.log(`CHAT - (${formattedTime}) ${chatMessage}`);
+				consoleLog(`[${formattedTime}] CHAT - ${chatMessage}`);
 				serverBroadcast(client, 'chat', null, messageToSend);
 				serverSend(client, 'chat', 'bold', `> ${messageToSend}`);
 				break;
@@ -77,7 +74,7 @@ server.on('connection', (client) => {
 				}
 
 				usernames.set(client, username);
-				console.log(`JOINED - ${username}`); // Message will be sent to everyone, except for whoever just joined.
+				consoleLog(`[${getTimeString()}] JOINED - ${username}`); // Message will be sent to everyone, except for whoever just joined.
 				
 				let userNum = 1;
 				let dataToSend = formatPacket('client_join', username);
@@ -103,8 +100,9 @@ server.on('connection', (client) => {
 	});
 
 	client.on('close', (message) => {
+		const date = new Date(Date.now());
 		let username = usernames.get(client);
-		console.log(`DISCONNECT - ${username} | CODE: ${message}`);
+		consoleLog(`[${getTimeString()}] DISCONNECT - ${username} | CODE: ${message}`);
 		serverBroadcast(client, 'client_left', username);
 		usernames.delete(client);
 	});
@@ -120,9 +118,18 @@ function serverBroadcast(ignoreClient, event, ...packetArgs) {
 	});
 }
 
-//Send a packet to a specific client only
+// Send a packet to a specific client only
 function serverSend(client, event, ...packetArgs) {
 	client.send(formatPacket(event, ...packetArgs));
+}
+
+// Used for server logging
+function getTimeString() {
+	const date = new Date(Date.now());
+	const hours = date.getHours().toString().padStart(2, '0');
+	const minutes = date.getMinutes().toString().padStart(2, '0');
+	const seconds = date.getSeconds().toString().padStart(2, '0');
+	return `${hours}:${minutes}:${seconds}`;
 }
 
 /* PACKET FUNCTIONS */
@@ -145,4 +152,33 @@ function packetDataJoin(data) {
 // Restore a split packet string
 function packetSplit(data) {
 	return data.split(PACKET_JOIN_STRING);
+}
+
+/* SERVER LOG */
+logStream = null;
+if(ENABLE_SERVER_LOG)
+{
+	const date = new Date(Date.now());
+	const year = date.getUTCFullYear().toString();
+	const months = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+	const days = date.getUTCDate().toString().padStart(2, '0');
+	const hours = date.getHours().toString().padStart(2, '0');
+	const minutes = date.getMinutes().toString().padStart(2, '0');
+	const seconds = date.getSeconds().toString().padStart(2, '0');
+	const dateStr = `${year}-${months}-${days}_${hours}-${minutes}-${seconds}`;
+	
+	// Ensure logs directory exists
+	const logsDir = path.join(__dirname, 'logs');
+	if (!fs.existsSync(logsDir)) {
+		fs.mkdirSync(logsDir, { recursive: true });
+	}
+
+	// Init log file
+	const logFilePath = path.join(logsDir, dateStr + '.txt');
+	logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
+}
+
+function consoleLog(message) {
+	if(ENABLE_SERVER_LOG) logStream.write(message + '\n');
+	console.log(message);
 }
