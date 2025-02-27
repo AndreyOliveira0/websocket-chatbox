@@ -74,12 +74,14 @@ function initializeSocket() {
 	socket.onclose = (event) => {
 		addMessage('Server closed, connection terminated!');
 		setChatVisibility(false);
+		userList.replaceChildren();
 		socket = null;
 	};
 
 	socket.onerror = (event) => {
 		addMessage('ERROR CODE: ' + event.code);
 		setChatVisibility(false);
+		userList.replaceChildren();
 		socket = null;
 	};
 }
